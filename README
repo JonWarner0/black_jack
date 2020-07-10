@@ -1,0 +1,23 @@
+Black Jack and Q-learning Agent:
+
+Agent learns from comparing bust probabilities and past actions
+to determine the move that will most likely yield a win.
+
+Tested on:
+        python versin 3.7.6
+	MySQL 8.0.20
+
+- The game does NOT yet support spliting of cards or doubling down.
+
+- Other palyers cards are not known to other players for probability simplicity
+ (will change once the correct equation is made). Once up and running other players
+ cards will be taken into acount.
+
+- Start with a single deck for probability simplicity and one game per episode. Once completed, 
+ deck size will move to a 6 decks with 6 games played per episode with no more than 5 players
+ (minus dealer) to prevent skewing of probabilities.
+
+- The database is cleared at the start it is not yet officialy being used meaningfully.
+
+To run game in terminal:
+> python blackjack.py {your MySQL psswrd} {name1} {name2} ... 
