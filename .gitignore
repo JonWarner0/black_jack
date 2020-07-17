@@ -1,5 +1,5 @@
 # Ignore back up files
 *~
 
-# Dont track byte files 
+# Dont track binary files 
 __pycache__/

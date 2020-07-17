@@ -1,4 +1,4 @@
-class blackjack_game:
+class BlackjackGame:
 
     def __init__(self, _players):
         self.players = _players
@@ -9,7 +9,6 @@ class blackjack_game:
             p.score = sum(i for i, _ in p.hand)
         self.pot = 0
         self.dealers_card = None
-
 
     def begin_game(self):
         """ Starts the game """
@@ -35,7 +34,6 @@ class blackjack_game:
                 p.score = sum(i for i, _ in p.hand)
             self.begin_game()
 
-
     def round_of_bets(self):
         """ Prompt players to place bets and add to pot """
         for p in self.players[1:]:
@@ -49,7 +47,6 @@ class blackjack_game:
                     print("! ERROR ! Please enter an integer value.")
             print("------------------")
 
-
     # Determine winner or tie which will need another round
     def reveal_cards(self):
         """ Reveal all players cards to determine if a player won """
@@ -57,7 +54,7 @@ class blackjack_game:
         tie_score = 0
         # Dealer needs score of at least 17 (Dealer is always at 0)
         self.ace_check(self.players[0], True)
-        #self.players[0].score = sum(i for i, _ in self.players[0].hand)
+        # self.players[0].score = sum(i for i, _ in self.players[0].hand)
         while self.players[0].score < 17:
             self.players[0].hand.append(self.deck.pop()) #give another
             self.ace_check(self.players[0], True) #check for ace
@@ -85,7 +82,6 @@ class blackjack_game:
         except AttributeError:
             return None
 
-
     def hit_round(self):
         """ Players can request more cards. *NO SPLITTING YET*. """
         for p in self.players[1:]:
@@ -108,10 +104,10 @@ class blackjack_game:
                     break
             print("------------------")
 
-
-    def ace_check(self, player, is_Dealer=False):
+    @staticmethod
+    def ace_check(player, is_dealer=False):
         """ Special cases for Ace cards to give player best chance of win """
-        if is_Dealer:
+        if is_dealer:
             for c in player.hand:
                 if c[0] == 1:
                     player.hand.append((11, c[1]))
@@ -127,12 +123,10 @@ class blackjack_game:
                 player.hand.append((1, c[1]))
                 player.hand.remove(c)
 
-
-
-    # Create the deck
-    def make_deck(self, size):
+    @staticmethod
+    def make_deck(size):
         """ Makes the deck in a set for arbitrary pops. Aces handled above.
-            formated so that duplicate card values can exist in set for
+            formatted so that duplicate card values can exist in set for
             a lazy mans shuffle.
         """
         deck = set()

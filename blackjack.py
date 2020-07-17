@@ -6,7 +6,6 @@ import player
 
 
 """ --- Database definitions --- """
-
 def create_connection(host_name, user_name, user_password):
     """ Establish a connection to the server """
     connection = None
@@ -18,7 +17,7 @@ def create_connection(host_name, user_name, user_password):
             )
         print("Connection to MySQL DB successful")
     except Error as e:
-        print("The error {} occured".format(e))
+        print("The error {} occurred".format(e))
         exit()
     return connection
 
@@ -34,7 +33,7 @@ def join_connection_and_DB(host_name, user_name, user_password, db_name):
             )
         print("Join of connection and database successful")
     except Error as e:
-        print("The error {} occured".format(e))
+        print("The error {} occurred".format(e))
         exit()
     return connection
 
@@ -46,7 +45,7 @@ def create_database(connection, query):
         cursor.execute(query)
         print("Database created successfully")
     except Error as e:
-        print("The error {} occured".format(e))
+        print("The error {} occurred".format(e))
         exit()
 
 
@@ -66,7 +65,6 @@ def execute_query(connection, query, param=None):
 def execute_read_query(connection, query, param=None): #edit for params
     """ Fetch data from the database """
     cursor = connection.cursor()
-    result = None
     try:
         if param:
             cursor.execute(query, param)
@@ -103,8 +101,7 @@ def make_tables():
     PRIMARY KEY (id)
     ) ENGINE = InnoDB
     """
-    #execute_query(connection, create_hand_table)
-
+    # execute_query(connection, create_hand_table)
 
 
 def reset_player_table():
@@ -113,19 +110,17 @@ def reset_player_table():
     execute_query(connection, "ALTER TABLE players AUTO_INCREMENT=1")
 
 
-
 """ --- Start of main for black jack game --- """
-
 if __name__ == '__main__':
     # Make the initial connection using the above function
     connection = create_connection("localhost","root",sys.argv[1])
     # Create the database with the established connection
     create_database_query = "CREATE DATABASE IF NOT EXISTS blakjack"
     create_database(connection, create_database_query)
-    #update connection to use the newly made DB
+    # update connection to use the newly made DB
     connection = join_connection_and_DB("localhost","root",sys.argv[1], "blakjack")
     make_tables()
-    reset_player_table() # reset everytime until building game history
+    reset_player_table()  # reset every time until building game history
     people = ['Dealer'] + sys.argv[2:]
     players = [] # players are people with cards
     for p in people: # deal the cards to the players, add players to DB
@@ -137,11 +132,10 @@ if __name__ == '__main__':
 
     # Play four games. Only one deck. (only one for now)
     for i in range(0,1):
-        game = blackjack_game.blackjack_game(players)
+        game = blackjack_game.BlackjackGame(players)
         result = game.begin_game()
         score_query = "SELECT score FROM players WHERE name = %s"
-        player_score = int(execute_read_query(connection,
-                            score_query, (result.name,))[0][0])
+        player_score = int(execute_read_query(connection, score_query, (result.name,))[0][0])
         query = "UPDATE players SET score=(%s) WHERE name=(%s)"
         execute_query(connection, query, (player_score+game.pot, result.name))
         print("{} won ${} with the hand {}".format(
@@ -155,6 +149,4 @@ if __name__ == '__main__':
     print("|         End of Game           |")
     print("---------------------------------\n")
 
-
-# Close properly
-connection.close()
+    connection.close()
